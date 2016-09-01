@@ -18,4 +18,4 @@ $(EXECUTABLE): $(OBJECTS)
 
 clean:
 	@echo clean ...
-	@rm -fr $(EXECUTABLE) *.o
+	@rm -fr $(EXECUTABLE) *.o *.exe

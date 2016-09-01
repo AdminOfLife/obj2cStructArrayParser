@@ -41,9 +41,9 @@ int main(int argc, char *argv[], char**envp) {
 			if(vertexList == NULL) { // initialize and add first vertices
 				printf("first run\n");
 				vertexList = (int*)malloc(3 * sizeof(int));
-				vertexList[0] = x * 100;
-				vertexList[1] = y * 100;
-				vertexList[2] = z * 100;
+				vertexList[0] = (int)(x * 100.0);
+				vertexList[1] = (int)(y * 100.0);
+				vertexList[2] = (int)(z * 100.0);
 				vertexListSize = 3;
 				for (int vertex = 0; vertex < vertexListSize/3; vertex++) {
 					printf("Vinit[%d] x:%d y:%d z:%d size:%d\n",vertex,vertexList[(vertex * 3)],vertexList[(vertex * 3)+1],vertexList[(vertex * 3)+2], vertexListSize);
@@ -54,30 +54,50 @@ int main(int argc, char *argv[], char**envp) {
 				}
 				printf("\n");
 				int *temp = (int*)malloc((vertexListSize + 3) * sizeof(int));
-				for (int vertex = 0; vertex < vertexListSize/3; vertex++) {
-					printf("TMP[%d] x:%d y:%d z:%d size:%d\n",vertex,vertexList[(vertex * 3)],vertexList[(vertex * 3)+1],vertexList[(vertex * 3)+2],vertexListSize);
-				}
-				printf("\n");
-				printf("\n");
-
-				memcpy(&temp,&vertexList, vertexListSize * sizeof(int));
-				printf("temp after memcpy\n");
-				for (int vertex = 0; vertex < vertexListSize/3; vertex++) {
-					printf("TMP[%d] x:%d y:%d z:%d size:%d\n",vertex,vertexList[(vertex * 3)],vertexList[(vertex * 3)+1],vertexList[(vertex * 3)+2],vertexListSize);
-				}
+                for (int vertex = 0; vertex < vertexListSize; vertex++) {
+                    temp[vertex] = vertexList[vertex];
+                }
 				free(vertexList);
-				printf("free old vertex list\n");
 				vertexList = temp;
-				printf("assign new temp array to vertexlist\n");
-				vertexList[vertexListSize] = x * 100;
-				vertexList[vertexListSize+1] = y * 100;
-				vertexList[vertexListSize+2] = z * 100;
+                printf("vertexListSize Index %d %d %d\n", vertexListSize,vertexListSize+1,vertexListSize+2);
+				vertexList[vertexListSize]   =  (int)(x * 100.0);
+				vertexList[vertexListSize+1] =  (int)(y * 100.0);
+				vertexList[vertexListSize+2] =  (int)(z * 100.0);
 				vertexListSize += 3;
+                printf("END OF VN WHILE LOOP ITERATION SIZE %d\n",vertexNormalsSize );
 			}
 		}
 		if(strcmp(objtoken,"vn") == 0 ) { // 0 means a match
-			fscanf(inputOBJFilePointer, "%f %f %f",&x,&y,&z);
-			printf("VERTEX NORMALS! %.2f %.2f %.2f\n",x,y,z);
+            fscanf(inputOBJFilePointer, "%f %f %f",&x,&y,&z);
+            printf("VERTEX NORMALS! %.2f %.2f %.2f\n",x,y,z);
+            if(vertexNormals == NULL) { // initialize and add first vertices
+                printf("first run\n");
+                vertexNormals = (int*)malloc(3 * sizeof(int));
+                vertexNormals[0] = (int)(x * 100.0);
+                vertexNormals[1] = (int)(y * 100.0);
+                vertexNormals[2] = (int)(z * 100.0);
+                vertexNormalsSize = 3;
+                for (int vertex = 0; vertex < vertexNormalsSize/3; vertex++) {
+                    printf("VNinit[%d] x:%d y:%d z:%d size:%d\n",vertex,vertexNormals[(vertex * 3)],vertexNormals[(vertex * 3)+1],vertexNormals[(vertex * 3)+2], vertexListSize);
+                }
+            } else {
+                for (int vertex = 0; vertex < vertexNormalsSize/3; vertex++) {
+                    printf("VN[%d] x:%d y:%d z:%d size:%d\n",vertex,vertexNormals[(vertex * 3)],vertexNormals[(vertex * 3)+1],vertexNormals[(vertex * 3)+2], vertexListSize);
+                }
+                printf("\n");
+                int *temp = (int*)malloc((vertexNormalsSize + 3) * sizeof(int));
+                for (int vertex = 0; vertex < vertexNormalsSize; vertex++) {
+                    temp[vertex] = vertexNormals[vertex];
+                }
+                free(vertexNormals);
+                vertexNormals = temp;
+                printf("vertexNormals Index %d %d %d\n", vertexNormalsSize,vertexNormalsSize+1,vertexNormalsSize+2);
+                vertexNormals[vertexNormalsSize]   =  (int)(x * 100.0);
+                vertexNormals[vertexNormalsSize+1] =  (int)(y * 100.0);
+                vertexNormals[vertexNormalsSize+2] =  (int)(z * 100.0);
+                vertexNormalsSize += 3;
+                printf("END OF VN WHILE LOOP ITERATION SIZE %d\n",vertexNormalsSize );
+            }
 		}
 		if(strcmp(objtoken,"f") == 0 ) { // 0 means a match
 			fscanf(inputOBJFilePointer, "%s %s %s",f1,f2,f3);
@@ -85,9 +105,15 @@ int main(int argc, char *argv[], char**envp) {
 		}
 	}
 
+    printf("vertexListSize %d\n",vertexListSize);
+    printf("vertexNormalsSize %d\n",vertexNormalsSize);
+
 	for (int vertex = 0; vertex < vertexListSize/3; vertex++) {
 		printf("V[%d] x:%d y:%d z:%d\n",vertex,vertexList[(vertex * 3)],vertexList[(vertex * 3)+1],vertexList[(vertex * 3)+2]);
 	}
+    for (int vertex = 0; vertex < vertexNormalsSize/3; vertex++) {
+        printf("VN[%d] x:%d y:%d z:%d size:%d\n",vertex,vertexNormals[(vertex * 3)],vertexNormals[(vertex * 3)+1],vertexNormals[(vertex * 3)+2], vertexListSize);
+    }
 
 	outputHeaderFilePointer = fopen(outputFilename, "w");
 
